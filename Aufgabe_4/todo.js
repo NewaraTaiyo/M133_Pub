@@ -1,26 +1,27 @@
-export class ToDo {
-  #titel = "";
-  #erledigt = "";
+export class ToDo extends EventTarget{
+  #title = "";
+  #done = "";
 
-  constructor(titel, erledigt) {
-    this.#titel = titel;
-    this.#erledigt = erledigt;
+  constructor(title, done) {
+    super();
+    this.#title = title;
+    this.#done = done;
   }
 
-  get titel() {
-    return this.#titel;
+  get getTitle() {
+    return this.#title;
   }
 
-  set titel(titel) {
-    this.#titel = titel;
+  set getTitle(title) {
+    this.#title = title;
   }
 
-  get erledigt() {
-    return this.#erledigt;
+  get getDone() {
+    return this.#done;
   }
 
-  set erledigt(erledigt) {
-    this.#erledigt = erledigt;
+  set setDone(done) {
+    this.#done = done;
   }
 
   element() {
@@ -40,14 +41,21 @@ export class ToDo {
 
     buttonElement.className = "loeschen";
 
-    spanElement.innerText = this.#titel;
+    spanElement.innerText = this.#title;
     buttonElement.innerText = "Löschen";
 
-    if (this.#erledigt) {
+    if (this.#done) {
       checkboxElement.setAttribute("checked", "checked");
       divElement.className = "erledigt";
     }
 
+    buttonElement.addEventListener('click', () => {
+      this.dispatchEvent(new Event('loeschen'));
+    });
+
+    checkboxElement.addEventListener('click', () => {
+      this.setDone = checkboxElement.checked;
+    });
     return listElement;
   }
 }
